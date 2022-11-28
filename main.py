@@ -2,6 +2,7 @@ import random
 import numpy as np
 import generate_maze
 from math import sqrt
+from plot_util import plot_fitness_function
 
 # LABYRINTH = np.array([[2, 0, 0, 0, 0],
 #                       [0, 1, 0, 1, 0],
@@ -184,8 +185,11 @@ class GeneticLabyrinth:
     def main(self, pop_size = POPULATION_SIZE):
         chromosomes = self.create_population(pop_size)
         best = self.best(chromosomes)
+        fitnessValues = np.zeros(ITERATIONS_COUNT)
         for iteration in range(ITERATIONS_COUNT):
-            print(f"{iteration}: {self.eval(best)}")
+            bestFitnessValue = self.eval(best)
+            print(f"{iteration}: {bestFitnessValue}")
+            fitnessValues[iteration] = bestFitnessValue
             mutated = self.mutate_population(chromosomes)
             crossovered = self.crossover_population(chromosomes)
             selected = self.select(chromosomes, POPULATION_SIZE - len(mutated) - len(crossovered))
@@ -194,6 +198,7 @@ class GeneticLabyrinth:
         print(f"result: ")
         print(self.best(chromosomes))
         print(f"the value is {self.eval(best)}")
+        plot_fitness_function(fitnessValues)
 
 if __name__ == '__main__':
     gen_lab = GeneticLabyrinth()
