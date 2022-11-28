@@ -1,11 +1,13 @@
 import random
 import numpy as np
+import generate_maze
 
-LABYRINTH = np.array([[2, 0, 0, 0, 0],
-                      [0, 1, 0, 1, 0],
-                      [0, 0, 0, 1, 1],
-                      [0, 1, 0, 0, 2]])
 
+# LABYRINTH = np.array([[2, 0, 0, 0, 0],
+#                       [0, 1, 0, 1, 0],
+#                       [0, 0, 0, 1, 1],
+#                       [0, 1, 0, 0, 2]])
+LABYRINTH = generate_maze.get_maze()
 MUTATION_PROB = 0.1
 CROSSOVER_PROB = 0.6
 POPULATION_SIZE = 100
