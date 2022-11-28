@@ -198,5 +198,3 @@ class GeneticLabyrinth:
 if __name__ == '__main__':
     gen_lab = GeneticLabyrinth()
     gen_lab.main()
-    # chromosomes = gen_lab.create_population(10)
-    # selected = gen_lab.select(chromosomes, 3)
