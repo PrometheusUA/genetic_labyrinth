@@ -1,7 +1,7 @@
 import random
 import numpy as np
 import generate_maze
-
+from math import sqrt
 
 # LABYRINTH = np.array([[2, 0, 0, 0, 0],
 #                       [0, 1, 0, 1, 0],
@@ -72,10 +72,31 @@ class GeneticLabyrinth:
                     return True
         return False
 
+    # def eval(self, chromosome):
+    #     score = 0
+    #     penalty = 1000 * self.height * self.width
+    #     if chromosome[self.start_point[0]][self.start_point[1]] == 0:
+    #         score += penalty
+    #     if chromosome[self.end_point[0]][self.end_point[1]] == 0:
+    #         score += penalty
+    #
+    #     for i in range(self.height):
+    #         for j in range(self.width):
+    #             if self.labyrinth[i][j] == 1 and chromosome[i][j] == 1:
+    #                 score += penalty
+    #             score += chromosome[i][j]
+    #
+    #     if not self.is_valid_path(chromosome):
+    #         score += 1000*penalty
+    #
+    #     return score
     def eval(self, chromosome):
         score = 0
+        # euclid distance
+     #   score = sqrt((self.end_point[0] - self.width) ** 2 + (self.end_point[1] - self.height) ** 2)
+        # manhattan distance
+        score = int(abs(abs(self.end_point[0]) - abs(self.width)) + abs(abs(self.end_point[1]) - abs(self.height)))
         penalty = 1000 * self.height * self.width
-
         if chromosome[self.start_point[0]][self.start_point[1]] == 0:
             score += penalty
         if chromosome[self.end_point[0]][self.end_point[1]] == 0:
