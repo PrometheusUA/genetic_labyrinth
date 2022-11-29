@@ -1,14 +1,13 @@
 import random
 import numpy as np
 import generate_maze
-from plot_util import plot_fitness_function
+from math import sqrt
 
-LABYRINTH = np.array([[1, 2, 1, 1, 1, 1, 1],
-                      [1, 0, 0, 0, 0, 0, 1],
-                      [1, 0, 1, 0, 1, 0, 1],
-                      [1, 0, 0, 0, 1, 1, 1],
-                      [1, 0, 1, 0, 0, 0, 1],
-                      [1, 1, 1, 1, 1, 2, 1]])
+# LABYRINTH = np.array([[2, 0, 0, 0, 0],
+#                       [0, 1, 0, 1, 0],
+#                       [0, 0, 0, 1, 1],
+#                       [0, 1, 0, 0, 2]])
+LABYRINTH = generate_maze.get_maze()
 MUTATION_PROB = 0.1
 CROSSOVER_PROB = 0.6
 POPULATION_SIZE = 100
@@ -91,6 +90,55 @@ class GeneticLabyrinth:
             score += 1000*penalty
 
         return score
+    # def eval(self, chromosome):
+    #     score = 0
+    #     penalty = 1000 * self.height * self.width
+    #     if chromosome[self.start_point[0]][self.start_point[1]] == 0:
+    #         score += penalty
+    #     if chromosome[self.end_point[0]][self.end_point[1]] == 0:
+    #         score += penalty
+    #
+    #     min_distance = 20
+    #     for i in range(self.height):
+    #         for j in range(self.width):
+    #             if self.labyrinth[i][j] == 1 and chromosome[i][j] == 1:
+    #                 score += penalty
+    #             if chromosome[i][j] == 1:
+    #                 euclid_distance = sqrt((i - self.end_point[0]) ** 2 + (j - self.end_point[1]) ** 2)
+    #                 min_distance = min(min_distance, euclid_distance)
+    #               #  print('min distance is {}'.format(min_distance))
+    #                # score += euclid_distance
+    #             score += chromosome[i][j]
+    #  #   print('min distance is {}'.format(min_distance))
+    #  #   score += min_distance
+    #
+    #     if not self.is_valid_path(chromosome):
+    #         score += 1000*penalty
+    #
+    #     return score
+    # def eval(self, chromosome):
+    #     score = 0
+    #     # euclid distance
+    #  #   score = sqrt((self.end_point[0] - self.width) ** 2 + (self.end_point[1] - self.height) ** 2)
+    #     # manhattan distance
+    #   #  score = int(abs(abs(self.end_point[0]) - abs(self.width)) + abs(abs(self.end_point[1]) - abs(self.height)))
+    #     penalty = 1000 * self.height * self.width
+    #     if chromosome[self.start_point[0]][self.start_point[1]] == 0:
+    #         score += penalty
+    #     if chromosome[self.end_point[0]][self.end_point[1]] == 0:
+    #         score += penalty
+    #
+    #     for i in range(self.height):
+    #         for j in range(self.width):
+    #             if self.labyrinth[i][j] == 1 and chromosome[i][j] == 1:
+    #                 score += penalty
+    #             score += chromosome[i][j]
+    #             # if chromosome[i][j] == 1:
+    #             #     score += int(abs(abs(self.end_point[0]) - abs(i)) + abs(abs(self.end_point[1]) - abs(j)))
+    #     if not self.is_valid_path(chromosome):
+    #         score += 1000*penalty
+    #
+    #     return score
 
     def select(self, chromosomes, number_to_select):
         values = [self.eval(chromosome) for chromosome in chromosomes]
@@ -163,11 +211,8 @@ class GeneticLabyrinth:
     def main(self, pop_size = POPULATION_SIZE):
         chromosomes = self.create_population(pop_size)
         best = self.best(chromosomes)
-        fitnessValues = np.zeros(ITERATIONS_COUNT)
         for iteration in range(ITERATIONS_COUNT):
-            bestFitnessValue = self.eval(best)
-            print(f"{iteration}: {bestFitnessValue}")
-            fitnessValues[iteration] = bestFitnessValue
+            print(f"{iteration}: {self.eval(best)}")
             mutated = self.mutate_population(chromosomes)
             crossovered = self.crossover_population(chromosomes)
             selected = self.select(chromosomes, POPULATION_SIZE - len(mutated) - len(crossovered))
@@ -176,11 +221,9 @@ class GeneticLabyrinth:
         print(f"result: ")
         print(self.best(chromosomes))
         print(f"the value is {self.eval(best)}")
-        plot_fitness_function(fitnessValues)
 
 if __name__ == '__main__':
-    labyrinth = generate_maze.get_maze()
-    gen_lab = GeneticLabyrinth(labyrinth)
+    gen_lab = GeneticLabyrinth()
     gen_lab.main()
-    print("Labyrinth was:")
-    print(np.array(labyrinth))
+    # chromosomes = gen_lab.create_population(10)
+    # selected = gen_lab.select(chromosomes, 3)
