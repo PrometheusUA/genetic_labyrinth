@@ -75,7 +75,7 @@ class GeneticLabyrinth:
 
     def eval(self, chromosome):
         score = 0
-        penalty = 1000 * self.height * self.width
+        penalty = self.height * self.width
         if chromosome[self.start_point[0]][self.start_point[1]] == 0:
             score += penalty
         if chromosome[self.end_point[0]][self.end_point[1]] == 0:
@@ -88,7 +88,7 @@ class GeneticLabyrinth:
                 score += chromosome[i][j]
 
         if not self.is_valid_path(chromosome):
-            score += 1000*penalty
+            score += np.sqrt(penalty)*penalty
 
         return score
 
