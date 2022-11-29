@@ -77,7 +77,7 @@ class GeneticLabyrinth:
 
     def eval(self, chromosome):
         score = 0
-        penalty = 1000 * self.height * self.width
+        penalty = self.height * self.width
         if chromosome[self.start_point[0]][self.start_point[1]] == 0:
             score += penalty
         if chromosome[self.end_point[0]][self.end_point[1]] == 0:
@@ -90,7 +90,7 @@ class GeneticLabyrinth:
                 score += chromosome[i][j]
 
         if not self.is_valid_path(chromosome):
-            score += 1000*penalty
+            score += np.sqrt(penalty)*penalty
 
         return score
 
@@ -199,7 +199,7 @@ class GeneticLabyrinth:
         fitnessValues = np.zeros(ITERATIONS_COUNT)
         for iteration in range(ITERATIONS_COUNT):
             bestFitnessValue = self.eval(best)
-            print(f"{iteration}: {bestFitnessValue}")
+            # print(f"{iteration}: {bestFitnessValue}")
             fitnessValues[iteration] = bestFitnessValue
             mutated = self.mutate_population(chromosomes)
             crossovered = self.crossover_population(chromosomes)
@@ -207,45 +207,54 @@ class GeneticLabyrinth:
             chromosomes = mutated + crossovered + selected
             best = self.best(chromosomes)
       #  print(f"result: ")
-     #   print(self.best(chromosomes))
+        print(self.eval(best))
      #   print(f"the value is {self.eval(best)}")
     #    plot_fitness_function(fitnessValues)
         return self.eval(best)
 
 if __name__ == '__main__':
-    # labyrinth = generate_maze.get_maze()
-    # gen_lab = GeneticLabyrinth(labyrinth)
-    # gen_lab.main()
-    # print("Labyrinth was:")
-    # print(np.array(labyrinth))
+    num_to_compare = 20
+    great_res_bound = 40
+
     average_prob = 0
-    for i in range(10):
+    great_res_prob = 0
+    for i in range(num_to_compare):
         labyrinth = generate_maze.get_maze()
         gen_lab = GeneticLabyrinth(labyrinth)
         res = gen_lab.main()
         average_prob += res
+        if res < great_res_bound:
+            great_res_prob += 1
        # print(res)
 
     average = 0
-    for i in range(10):
+    great_res_standard = 0
+    for i in range(num_to_compare):
         labyrinth = generate_maze.get_maze()
         gen_lab = GeneticLabyrinth(labyrinth, crossover='standart')
         res = gen_lab.main()
         average += res
+        if res < great_res_bound:
+            great_res_standard += 1
        # print(res)
 
     average_best_cells = 0
-    for i in range(10):
+    great_res_best_cells = 0
+    for i in range(num_to_compare):
         labyrinth = generate_maze.get_maze()
         gen_lab = GeneticLabyrinth(labyrinth, crossover='get_best_cells')
         res = gen_lab.main()
         average_best_cells += res
+        if res < great_res_bound:
+            great_res_best_cells += 1
     # print(res)
 
-    print('standart_with_probability')
-    print('average  ', average_prob/10)
-    print('standart')
-    print('average  ', average/10)
+    print('standard_with_probability')
+    print('average fitness ', average_prob/num_to_compare)
+    print("good percentage ", great_res_prob/num_to_compare)
+    print('standard')
+    print('average fitness ', average/num_to_compare)
+    print("good percentage ", great_res_standard/num_to_compare)
     print('get_best_cells')
-    print('average  ', average_best_cells/10)
-
+    print('average fitness ', average_best_cells/num_to_compare)
+    print("good percentage ", great_res_best_cells/num_to_compare)

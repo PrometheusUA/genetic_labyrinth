@@ -39,7 +39,7 @@ wall = 'w'
 cell = 'c'
 unvisited = 'u'
 height = 6
-width = 7
+width = 6
 maze = []
 
 # Init the maze with all cells marked as unvisited
