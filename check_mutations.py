@@ -208,18 +208,29 @@ class GeneticLabyrinth:
         # plot_fitness_function(fitnessValues)
 
 if __name__ == '__main__':
-    # labyrinth = generate_maze.get_maze()
     gen_lab = GeneticLabyrinth(LABYRINTH)
-    # gen_lab.main()
-    # print("Labyrinth was:")
-    # print(np.array(labyrinth))
     num_to_compare = 10
+    great_res_bound = 30
+
     default_mut_values = []
     concentrated_mut_values = []
+    default_cumsum, concentrated_cumsum = 0, 0
+    default_great, concentrated_great = 0, 0
     for i in range(num_to_compare):
         default_mut_values.append(gen_lab.main())
+        default_cumsum += default_mut_values[-1][-1]
+        if default_mut_values[-1][-1] < great_res_bound:
+            default_great += 1
     plot_fitness_function_unlogged(*default_mut_values)
 
     for i in range(num_to_compare):
         concentrated_mut_values.append(gen_lab.main("concentrated"))
+        concentrated_cumsum += concentrated_mut_values[-1][-1]
+        if concentrated_mut_values[-1][-1] < great_res_bound:
+            concentrated_great += 1
     plot_fitness_function_unlogged(*concentrated_mut_values)
+
+    print(f"Default mutation function mean resulting value is =  {default_cumsum / num_to_compare}")
+    print(f"Default mutation function great results percentage = {default_great/num_to_compare}")
+    print(f"Concentrated mutation function mean resulting value is =  {concentrated_cumsum / num_to_compare}")
+    print(f"Concentrated mutation function great results percentage = {concentrated_great/num_to_compare}")

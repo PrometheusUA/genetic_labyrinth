@@ -119,17 +119,27 @@ class GeneticLabyrinth:
         return chromosomes[np.argmin(values)]
 
     def mutate(self, chromosome):
-        count_mutations = int(self.width * self.height * MUTATION_PROB)
         res_chromosome = np.copy(chromosome)
-        for mut in range(count_mutations):
+        count_mutations = int(self.width * self.height * MUTATION_PROB)
+        while count_mutations > 0:
             i, j = self.start_point
             while (i, j) == self.start_point or (i, j) == self.end_point:
-                i = random.randint(0, self.height - 1)
-                j = random.randint(0, self.width - 1)
-            if res_chromosome[i][j] == 0:
-                res_chromosome[i][j] = 1
-            else:
-                res_chromosome[i][j] = 0
+                i = random.randint(1, self.height - 2)
+                j = random.randint(1, self.width - 2)
+            res_chromosome[i][j] = 1 - res_chromosome[i][j]
+            count_mutations -= 1
+            if (i - 1, j) == self.start_point and (i - 1, j) == self.end_point:
+                res_chromosome[i - 1][j] = 1 - res_chromosome[i - 1][j]
+                count_mutations -= 1
+            if (i + 1, j) == self.start_point and (i - 1, j) == self.end_point:
+                res_chromosome[i + 1][j] = 1 - res_chromosome[i + 1][j]
+                count_mutations -= 1
+            if (i, j - 1) == self.start_point and (i - 1, j) == self.end_point:
+                res_chromosome[i][j - 1] = 1 - res_chromosome[i][j - 1]
+                count_mutations -= 1
+            if (i, j + 1) == self.start_point and (i - 1, j) == self.end_point:
+                res_chromosome[i][j + 1] = 1 - res_chromosome[i][j + 1]
+                count_mutations -= 1
         return res_chromosome
 
     def mutate_population(self, chromosomes):

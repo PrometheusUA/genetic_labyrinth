@@ -716,7 +716,7 @@ if __name__ == '__main__':
             mixed_great += 1
 
     print(f"Fitness proportionate selection function mean resulting value is =  {standard_cumsum / num_to_compare}")
-    print(f"Stochastic selection function great results percentage = {standard_great/num_to_compare}")
+    print(f"Fitness proportionate selection function great results percentage = {standard_great/num_to_compare}")
     print(f"Truncation selection function mean resulting value is =  {changed_cumsum / num_to_compare}")
     print(f"Truncation selection function great results percentage = {changed_great/num_to_compare}")
     print(f"Tournament selection function mean resulting value is =  {tournament_cumsum / num_to_compare}")
