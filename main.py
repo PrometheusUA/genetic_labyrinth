@@ -85,10 +85,12 @@ class GeneticLabyrinth:
             for j in range(self.width):
                 if self.labyrinth[i][j] == 1 and chromosome[i][j] == 1:
                     score += penalty
-                score += chromosome[i][j]
+        visited = np.sum(chromosome)
 
         if not self.is_valid_path(chromosome):
-            score += np.sqrt(penalty)*penalty
+            score += np.sqrt(penalty) * penalty - visited
+        else:
+            score += visited
 
         return score
 
